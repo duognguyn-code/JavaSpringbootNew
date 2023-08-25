@@ -1,11 +1,9 @@
 package com.example.manageprojectemployeeretro.controller;
 
 import com.example.manageprojectemployeeretro.dto.ProjectDTO;
-import com.example.manageprojectemployeeretro.dto.UserDTO;
 import com.example.manageprojectemployeeretro.entity.Project;
-import com.example.manageprojectemployeeretro.entity.Role;
-import com.example.manageprojectemployeeretro.entity.User;
 import com.example.manageprojectemployeeretro.service.ProjectService;
+import com.example.manageprojectemployeeretro.service.impl.ProjectServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -18,13 +16,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
+import org.apache.log4j.Logger;
+
 
 @Controller
-@RequestMapping("api/project")
+@RequestMapping("api1/project")
 public class ProjectController {
+    private static final Logger logger = Logger.getLogger(ProjectController.class);
 
     @Autowired
     private ProjectService projectService;
+    @Autowired
+    private ProjectServiceImpl projectServiceImpl;
 
     @GetMapping("listProject")
     public String viewProject(@RequestParam(defaultValue = "0") int page, Model model){
@@ -51,17 +54,22 @@ public class ProjectController {
         project.setEndDate(projectDTO.getEndDate());
         project.setStartDate(projectDTO.getStartDate());
         projectService.saveProject(project);
-        return "redirect:/api/project/listProject";
+        return "redirect:/api1/project/listProject";
     }
     @GetMapping("delete/{id}")
-    public String deleteUser(@PathVariable int id){
+    public String deleteProject(@PathVariable int id){
         projectService.deleteProjectById(id);
-        return "redirect:/api/project/listProject";
+        return "redirect:/api1/project/listProject";
+    }
+
+    @GetMapping("viewUpdate/{id}")
+    public String viewUpdateProject(@PathVariable("id") Long id, Model model){
+        model.addAttribute("project", projectService.findProjectById(id));
+        return "update-project";
     }
     @RequestMapping(value = "updateProject/{id}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     public String updateProject(@PathVariable("id") Long id, ProjectDTO projectDTO) {
         Project project = projectService.findProjectById(id);
-
 
         project.setName(projectDTO.getName());
         project.setDescription(projectDTO.getDescription());
@@ -71,7 +79,6 @@ public class ProjectController {
 
         projectService.saveProject(project);
 
-        return "redirect:/api/project/listProject";
+        return "redirect:/api1/project/listProject";
     }
-
 }

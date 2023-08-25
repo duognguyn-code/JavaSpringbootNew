@@ -24,5 +24,5 @@ public class ProjectDTO {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     public LocalDate endDate;
 
-    public List<UserDTO> users;
+    public String userName;
 }

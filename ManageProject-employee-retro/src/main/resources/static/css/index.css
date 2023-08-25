@@ -1,0 +1,16 @@
+
+.logo1{
+    font-size: 35px;
+    text-decoration: none;
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: #99CCFF
+}
+.orange{
+    font-size:30px;
+    color: orange;
+}
+.img-fluid{
+    width:326px;
+    height:224px;
+}
